@@ -8,6 +8,7 @@ singleBox.style.background = "#fff";
 
 
 
+
 const row = 20;
 const down = 20;
 const cellSize = 20;
@@ -27,12 +28,28 @@ function displayLayout(height, width) {
         cell.style.backgroundColor = singleBox.style.background;
         cell.style.border = "1px solid black";
 
+
+        cell.addEventListener("dblclick", () => {
+
+                const isNotColored = window.getComputedStyle(cell).backgroundColor === "rgb(255, 255, 255)";
+                if (isNotColored) {
+                    cell.style.backgroundColor = currentBoxText.style.backgroundColor;
+                }
+                else {
+                    cell.style.backgroundColor = "white"
+                }
+
+        })
+
         gridBox.appendChild(cell);
     }
 }
 
 
 displayLayout(row, down);
+
+
+let isSelected = false;
 
 
 function GetText(colorTextElement) {
@@ -50,7 +67,13 @@ allColors.forEach(color => {
         allColors.forEach(c => c.classList.remove("clicked"));
         color.classList.add("clicked");
         currentBoxText.textContent = GetText(color);
+        const bg = window.getComputedStyle(color).backgroundColor;
+        currentBoxText.style.backgroundColor = bg;
+        isSelected = true;
     });
+
+
+
 })
 
 
