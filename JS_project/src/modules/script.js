@@ -1,3 +1,5 @@
+import {Save, Load} from "./data.js"
+
 const gridBox = document.getElementById("array-grid");
 const singleBox = document.createElement("div");
 
@@ -7,11 +9,16 @@ singleBox.style.height = "20px";
 singleBox.style.background = "#fff";
 
 
-
+const saveMapButton = document.getElementById("save-button");
 
 const row = 20;
 const down = 20;
 const cellSize = 20;
+
+
+const mapState = Array.from({length: row}, () =>
+Array.from({length: down}, () => null));        //null = white
+
 
 
 function displayLayout(height, width) {
@@ -23,29 +30,33 @@ function displayLayout(height, width) {
 
     for (let i = 0; i < row * down; i++) {
         const cell = document.createElement("div");
+
+        const rowIndex = Math.floor(i / width);
+        const collumnIndex = i % width;
+
+
         cell.style.height = `${singleBox.style.height}`;
         cell.style.width = `${singleBox.style.width}`;
-        cell.style.backgroundColor = singleBox.style.background;
+        cell.style.backgroundColor = mapState[rowIndex][collumnIndex] ?? "white";
         cell.style.border = "1px solid black";
+
 
 
         cell.addEventListener("dblclick", () => {
 
-                const isNotColored = window.getComputedStyle(cell).backgroundColor === "rgb(255, 255, 255)";
-                if (isNotColored) {
-                    cell.style.backgroundColor = currentBoxText.style.backgroundColor;
+                if (mapState[rowIndex][collumnIndex] === null) {
+                    mapState[rowIndex][collumnIndex] = currentBoxText.style.backgroundColor;
                 }
                 else {
-                    cell.style.backgroundColor = "white"
+                    mapState[rowIndex][collumnIndex] = null;
                 }
+                cell.style.backgroundColor = mapState[rowIndex][collumnIndex] ?? "white"    ;
 
         })
 
         gridBox.appendChild(cell);
     }
 }
-
-
 displayLayout(row, down);
 
 
@@ -71,9 +82,16 @@ allColors.forEach(color => {
         currentBoxText.style.backgroundColor = bg;
         isSelected = true;
     });
-
-
-
 })
 
+
+saveMapButton.addEventListener("click", () => {
+    Save(mapState);
+    console.log("Map is probably saved");
+    window.location.href = "hp.html";
+    alert("Map is probably saved");
+});
+
+
+console.log(mapState);
 
