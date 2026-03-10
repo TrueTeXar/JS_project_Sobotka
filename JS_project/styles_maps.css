@@ -9,3 +9,20 @@ body {
     color: white;
     font-family: Bahnschrift;
 }
+
+
+
+#container-for-maps {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+    gap: 50px;
+}
+
+#container-for-maps > p {
+    cursor: pointer;
+    padding: 10px;
+    border: 1px rebeccapurple solid;
+    text-align: center;
+}

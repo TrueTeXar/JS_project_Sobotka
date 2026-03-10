@@ -1,7 +1,12 @@
-export function Save(mapState) {
-    const storedMaps = JSON.parse(localStorage.getItem("mapArray"));
+export function Save(mapState, name) {
+    const storedMaps = JSON.parse(localStorage.getItem("mapArray")) || [];
 
-    storedMaps.push(mapState);
+    const mapObject = {
+        name: name,
+        map: JSON.parse(JSON.stringify(mapState))
+    }
+
+    storedMaps.push(mapObject);
     localStorage.setItem("mapArray", JSON.stringify(storedMaps));
 }
 

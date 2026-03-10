@@ -1,5 +1,6 @@
 import {Save, Load} from "./data.js"
 
+
 const gridBox = document.getElementById("array-grid");
 const singleBox = document.createElement("div");
 
@@ -10,18 +11,28 @@ singleBox.style.background = "#fff";
 
 
 const saveMapButton = document.getElementById("save-button");
+const mapNameInput = document.getElementById("name-map-input");
+
+const mapContainer = document.getElementById("container-for-maps");
+const loadedMaps = Load();
 
 const row = 20;
 const down = 20;
 const cellSize = 20;
 
 
-const mapState = Array.from({length: row}, () =>
+const selectedMap = JSON.parse(sessionStorage.getItem("selectedMap"));
+
+
+const mapState = selectedMap || Array.from({length: row}, () =>
 Array.from({length: down}, () => null));        //null = white
 
 
 
 function displayLayout(height, width) {
+    if (!gridBox) return;
+
+
     gridBox.innerHTML = "";
     gridBox.style.display = "grid";
 
@@ -85,12 +96,29 @@ allColors.forEach(color => {
 })
 
 
-saveMapButton.addEventListener("click", () => {
-    Save(mapState);
-    console.log("Map is probably saved");
-    window.location.href = "hp.html";
-    alert("Map is probably saved");
-});
+if (saveMapButton) {
+    saveMapButton.addEventListener("click", () => {
+        Save(mapState, mapNameInput.value);
+        console.log("Map is probably saved");
+        window.location.href = "hp.html";
+        alert("Map is probably saved");
+    });
+}
+
+
+loadedMaps.forEach(map => {
+    const elForMap = document.createElement("p");
+    elForMap.textContent = map.name;
+
+    elForMap.addEventListener("click", () => {
+        sessionStorage.setItem("selectedMap", JSON.stringify(map.map));
+        window.location.href = "editor.html";
+    })
+    mapContainer.appendChild(elForMap);
+})
+
+
+
 
 
 console.log(mapState);
